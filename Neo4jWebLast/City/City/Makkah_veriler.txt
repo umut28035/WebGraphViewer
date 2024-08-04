@@ -1,0 +1,2 @@
+Makkah:
+  http://194.50.0.18/dashboard/

@@ -1,0 +1,11 @@
+Mentese:
+  http://37.200.87.7/
+  http://37.200.87.12/login.php?errNum=3
+  http://37.200.87.19/
+  http://37.200.87.21/
+  http://37.200.87.26/
+  http://37.200.87.52/
+  https://mksas.com.tr/
+  http://37.200.87.71/
+  http://37.200.87.78/Identity/Account/Login?ReturnUrl=%2F
+  https://aio.mugla.bel.tr/index.php/login

@@ -1,0 +1,22 @@
+Sheridan:
+  http://216.9.224.28/
+  http://216.9.224.32/
+  https://accounts.google.com/v3/signin/identifier?continue=https%3A%2F%2Fmail.google.com%2Fchat%2Fu%2F0%2F&followup=https%3A%2F%2Fmail.google.com%2Fchat%2Fu%2F0%2F&ifkv=AaSxoQw1m7Lfh9DNzUEf_9hCEQKJWYghKm_AjWi4sFjYeeX3PpdaLNomT7w9a_kTBHMUPSYMQ8uNOA&osid=1&passive=1209600&service=dynamite&flowName=WebLiteSignIn&flowEntry=ServiceLogin&dsh=S-1676944441%3A1714934924945037
+  http://216.9.224.71/
+  http://216.9.224.91/
+  http://216.9.224.110/
+  http://216.9.224.114/
+  http://216.9.224.113/
+  http://216.9.224.111/
+  http://216.9.224.112/
+  http://216.9.224.132/
+  http://216.9.224.127/
+  http://216.9.224.138/
+  http://216.9.224.136/
+  http://216.9.224.165/
+  http://216.9.224.150/
+  http://216.9.224.185/
+  http://216.9.224.179/
+  http://216.9.224.177/
+  http://216.9.224.204/
+  http://216.9.224.243/

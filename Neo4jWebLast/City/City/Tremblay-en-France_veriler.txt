@@ -1,0 +1,23 @@
+Tremblay-en-France:
+  http://45.88.91.50/
+  http://45.88.91.49/
+  http://45.88.91.51/
+  http://45.88.91.52/
+  http://45.88.91.56/
+  http://45.88.91.60/
+  http://45.88.91.61/
+  http://45.88.91.62/
+  http://45.88.91.70/
+  http://45.88.91.71/
+  http://45.88.91.72/
+  http://45.88.91.73/
+  http://45.88.91.77/
+  http://45.88.91.88/
+  http://45.88.91.96/
+  http://45.88.91.97/
+  http://45.88.91.98/
+  http://45.88.91.100/
+  https://github.com/microsoft/MSRC-Microsoft-Security-Updates-API/blob/main/docs/swagger.json
+  http://45.88.91.149/
+  http://45.88.91.177/
+  http://45.88.91.213/

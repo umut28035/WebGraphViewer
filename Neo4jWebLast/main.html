@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome Page</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #74ebd5, #9face6);
+            color: #333;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 1s ease-in-out;
+            backdrop-filter: blur(10px);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .logo img {
+            max-width: 100%;
+            margin-bottom: 5px;
+        }
+
+        .mockup-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .mockup {
+            flex: 0 0 calc(50% - 20px); /* 50% eksi margin ve padding */
+            max-width: calc(50% - 20px); /* 50% eksi margin ve padding */
+            margin: 10px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .mockup:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .mockup img {
+            width: 100%;
+            border-radius: 15px 15px 0 0;
+        }
+
+        .description {
+            padding: 15px;
+            background: linear-gradient(135deg, #ffffff, #e0e0e0);
+            border-radius: 0 0 15px 15px;
+            text-align: left;
+            line-height: 1.6;
+        }
+
+        .continue-btn {
+            margin: 10px;
+            padding: 15px 30px;
+            background-color: #565656;
+            color: white;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .continue-btn:hover {
+            background-color: #000000;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo-description {
+            margin-bottom: 20px; /* Ayarlanan boşluk değeri */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <img src="photo/logo.png" alt="Logo"> 
+        </div>
+        <div class="mockup-container">
+            <div class="mockup">
+                <img src="photo/home.png" alt="Mockup Image"> 
+                <div class="description">
+                    Proje Hakkında Kısa bir bilgi Girilecek.
+                </div>
+            </div>
+            <!-- İkinci mockup ve açıklama buraya eklenebilir -->
+        </div>
+        <button class="continue-btn" onclick="location.href='file:tutorial.html'">Continue</button>
+    </div>
+</body>
+</html>

@@ -1,0 +1,6 @@
+Gazipasa:
+  http://193.36.183.1/
+  http://193.36.183.24/
+  https://gazipasa.bel.tr/
+  http://193.36.183.88/
+  http://193.36.183.144/

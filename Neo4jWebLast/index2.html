@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Graph Viewer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            height: 100vh;
+        }
+        #sidebar {
+            flex: 25%;
+            background-color: #f4f4f4;
+            padding: 20px;
+            overflow-y: auto; /* Adding scroll to sidebar */
+        }
+        #relationshipData {
+            max-height: calc(100vh - 200px); /* Adjust as needed */
+            overflow-y: auto;
+            margin-top: 20px;
+        }
+        .relationship-item {
+            padding: 10px;
+            border: 1px solid #ccc;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .relationship-item .link {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .relationship-item .count {
+            color: #555;
+            display: block;
+        }
+
+        .relationship-item:hover {
+            background-color: #dbdbdb;
+        }
+        #graph-container {
+            flex: 50%;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        #graph {
+            width: 100%;
+            height: 90%;
+            border: 1px solid #ddd;
+        }
+        .select-wrapper {
+            margin-bottom: 10px;
+        }
+
+        .select-options {
+            padding: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            background-color: #fff;
+            font-size: 16px;
+        }
+
+        .input-wrapper {
+            margin-bottom: 10px;
+        }
+
+        .input-wrapper input {
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            width: calc(100% - 16px);
+        }
+        .iprangesearcher {
+            margin-top: 10px;
+        }
+
+        .iprangesearcher input {
+            width: 40%;  
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            padding: 8px;
+            
+        }
+        .button-container {
+            margin-top: 10px;
+        }
+
+        .button-container button {
+            width: 32%; 
+            height: 40px; 
+            padding: 10px 20px;
+            border-radius: 5px;
+            border: none;
+            background-color: #565656;
+            color: #fff;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        .button-container button:hover {
+            background-color: #000000;
+        }
+
+        .button-container-get {
+            margin-top: 10px;
+        }
+
+        .button-container-get button {
+            width: 98%; 
+            height: 40px; 
+            padding: 10px 20px;
+            border-radius: 5px;
+            border: none;
+            background-color: #565656;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .button-container-get button:hover {
+            background-color: #000000;
+        }
+
+        .button-container-delete {
+            margin-top: 10px;
+        }
+
+        .button-container-delete button {
+            width: 98%; 
+            height: 40px; 
+            padding: 10px 20px;
+            border-radius: 5px;
+            border: none;
+            background-color: #890000;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .button-container-delete button:hover {
+            background-color: #ff0000;
+        }
+
+        #links-sidebar {
+            flex: 25%;
+            background-color: #f4f4f4;
+            padding: 20px;
+            overflow-y: auto;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div id="sidebar">
+        <h2>Options</h2>
+
+        <div class="select-wrapper">
+            <label for="maxDepthSelect">Select depth:</label>
+            <select id="maxDepthSelect" class="select-options" onchange="SelectDepth()">
+              <option value="1" selected>1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+            </select>
+        </div>  
+
+        <div class="input-wrapper">
+            <input id="link-list" placeholder="Enter link or ip here"></input>
+        </div>
+        <div class="button-container">
+            <button onclick="fetchCity()">Add City</button>
+            <button onclick="fetchUrl()">Add Url</button>
+            <button onclick="fetchIp()">Add Ip</button>
+         </div>
+        
+        <div class="button-container-get">
+            <button onclick="fetchGraph()">Get Graph</button>
+        </div>
+        <div class="button-container-get">
+            <button onclick="RelationshipCount()">Get Count</button>
+        </div>
+        <div class="button-container-get">
+            <button onclick="RelationshipIncoming()">Link Count</button>
+        </div>
+        <div class="button-container-delete">
+            <button onclick="DeleteData()">Delete Data</button>
+        </div>
+        <div class="iprangesearcher">
+            <input id="list1" placeholder="Enter start ip here"></input>
+            <input id="list2" placeholder="Enter end ip here"></input>
+        </div>
+        <div class="button-container-get">
+            
+            <button onclick="iprange()">Search Ip Range</button>
+        </div>
+    </div>
+
+    <div id="graph-container">
+        <h2>Graph Visualization</h2>
+        <div id="graph"></div>
+    </div>
+
+    <div id="links-sidebar">
+        <h2>Links</h2>
+        <div id="relationshipData">
+            
+        </div>
+    </div>
+</body>
+</html>
+
+<script>
+        function shortenUrl(url) {
+            return url.length > 30 ? url.slice(0, 27) + '...' : url;
+        }
+
+        function fetchGraph() {
+            const serverUrl = 'http://localhost:3000';
+
+            fetch(serverUrl + '/neo4j-api')
+                .then(response => response.json())
+                .then(data => {
+                    const nodes = new vis.DataSet();
+                    const edges = new vis.DataSet();
+
+                    data.nodes.forEach(node => {
+                        const nodeId = node.id;
+
+                        nodes.add({
+                            id: nodeId,
+                            label: shortenUrl(node.properties.url),
+                            title: node.properties.url,
+                            shape: 'dot',
+                            size: node.properties.is_root ? 20 : 10,
+                            color: node.properties.is_root ? '#A600FF' : '#89F4F5'
+                        });
+                    });
+
+                    data.edges.forEach(edge => {
+                        edges.add({
+                            from: edge.from,
+                            to: edge.to,
+                            label: edge.label,
+                            arrows: {
+                                to: { enabled: true, scaleFactor: 1, color: '#000000' }
+                            },
+                            font: { size: 7, color: '#000000' }
+                        });
+                    });
+
+                    const container = document.getElementById('graph');
+                    const dataForGraph = {
+                        nodes: nodes,
+                        edges: edges
+                    };
+                    const options = {
+                        nodes: {
+                            font: {
+                                size: 14,
+                                multi: 'html',
+                                bold: {
+                                    color: '#0077aa'
+                                }
+                            }
+                        },
+                        edges: {
+                            color: { color: '#000000' },
+                            arrows: {
+                                to: { enabled: true, scaleFactor: 1, color: '#000000' }
+                            },
+                            font: { size: 7, color: '#000000' }
+                        },
+                        physics: {
+                            enabled: true
+                        }
+                    };
+                    const network = new vis.Network(container, dataForGraph, options);
+                })
+                .catch(error => console.error('Error fetching graph data:', error));
+        }
+
+
+        function fetchCity() {
+            const cityInput = document.getElementById('link-list').value;
+            const serverUrl = 'http://localhost:3000';
+
+            fetch(`${serverUrl}/neo4j-city?city=${cityInput}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    console.log(data); // İsteğin başarıyla tamamlandığını kontrol etmek için
+                    alert('Request completed successfully!');
+                })
+                .catch(error => {
+                    console.error('Error fetching city data:', error);
+                    alert('Error fetching city data. Please check the console for more information.');
+                });
+        }
+
+
+
+
+        function fetchUrl() {
+            const urlInput = document.getElementById('link-list').value;
+            const serverUrl = 'http://localhost:3000';
+
+            fetch(`${serverUrl}/neo4j-urlinput?urlinput=${encodeURIComponent(urlInput)}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    console.log(data); // İsteğin başarıyla tamamlandığını kontrol etmek için
+                    alert('Request completed successfully!');
+                })
+                .catch(error => {
+                    console.error('Error fetching url data:', error);
+                    alert('Error fetching url data. Please check the console for more information.');
+                });
+        }
+
+
+
+        function fetchIp() {
+            const ipInput = document.getElementById('link-list').value;
+            const serverUrl = 'http://localhost:3000';
+
+            fetch(`${serverUrl}/neo4j-ipinput?ipinput=${ipInput}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    console.log(data); // İsteğin başarıyla tamamlandığını kontrol etmek için
+                    alert('Request completed successfully!');
+                })
+                .catch(error => {
+                    console.error('Error fetching ip data:', error);
+                    alert('Error fetching ip data. Please check the console for more information.');
+                });
+        }
+
+
+
+        function DeleteData() {
+            const serverUrl = 'http://localhost:3000';
+
+            fetch(serverUrl + '/neo4j-delete')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    console.log(data); // İsteğin başarıyla tamamlandığını kontrol etmek için
+                    alert('Request completed successfully!');
+                })
+                .catch(error => {
+                    console.error('Error delete data:', error);
+                    alert('Error delete data. Please check the console for more information.');
+                });
+        }
+
+        function SelectDepth() {
+            const selectedValue = document.getElementById('maxDepthSelect').value;
+            const serverUrl = 'http://localhost:3000';
+
+            fetch(`${serverUrl}/neo4j-depth?depthinput=${selectedValue}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    console.log(data); // İsteğin başarıyla tamamlandığını kontrol etmek için
+                    alert('Request completed successfully!');
+                })
+                .catch(error => {
+                    console.error('Error select depth:', error);
+                    alert('Error select depth. Please check the console for more information.');
+                });
+        }
+
+
+        function RelationshipCount() {
+            const serverUrl = 'http://localhost:3000';
+
+            fetch(serverUrl + '/neo4j-count')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log(data); // İsteğin başarıyla tamamlandığını kontrol etmek için
+
+                    // Verileri alttaki div'e yazdırmak
+                    const relationshipDataDiv = document.getElementById('relationshipData');
+                    relationshipDataDiv.innerHTML = ""; // Önceki verileri temizle
+
+                    data.forEach(item => {
+                        const itemDiv = document.createElement('div');
+                        itemDiv.classList.add('relationship-item');
+                        
+                        const linkElement = document.createElement('span');
+                        linkElement.classList.add('link');
+                        linkElement.textContent = `LİNK: ${item.url}`;
+                        
+                        const countElement = document.createElement('span');
+                        countElement.classList.add('count');
+                        countElement.textContent = ` Has Link Count: ${item.relationship_count}`;
+
+                        itemDiv.appendChild(linkElement);
+                        itemDiv.appendChild(countElement);
+                        
+                        relationshipDataDiv.appendChild(itemDiv);
+                    });
+
+                    alert('Request completed successfully!');
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                    alert('Error fetching data. Please check the console for more information.');
+                });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('getCountButton').addEventListener('click', RelationshipCount);
+        });
+
+        function RelationshipIncoming() {
+            const serverUrl = 'http://localhost:3000';
+
+            fetch(serverUrl + '/neo4j-incoming')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log(data); // İsteğin başarıyla tamamlandığını kontrol etmek için
+
+                    // Verileri alttaki div'e yazdırmak
+                    const relationshipDataDiv = document.getElementById('relationshipData');
+                    relationshipDataDiv.innerHTML = ""; // Önceki verileri temizle
+
+                    data.forEach(item => {
+                        const itemDiv = document.createElement('div');
+                        itemDiv.classList.add('relationship-item');
+                        
+                        const linkElement = document.createElement('span');
+                        linkElement.classList.add('link');
+                        linkElement.textContent = `LİNK: ${item.url}`;
+                        
+                        const countElement = document.createElement('span');
+                        countElement.classList.add('count');
+                        countElement.textContent = ` Has Link Count: ${item.relationship_count}`;
+
+                        itemDiv.appendChild(linkElement);
+                        itemDiv.appendChild(countElement);
+                        
+                        relationshipDataDiv.appendChild(itemDiv);
+                    });
+
+                    alert('Request completed successfully!');
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                    alert('Error fetching data. Please check the console for more information.');
+                });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('getCountButton').addEventListener('click', RelationshipCount);
+        });
+
+        function iprange() {
+        const ipInput1 = document.getElementById('list1').value;
+        const ipInput2 = document.getElementById('list2').value;
+        const serverUrl = 'http://localhost:3000';  // Use the correct port for Flask server
+
+        fetch(`${serverUrl}/neo4j-iprangesearcher?ipinput1=${ipInput1}&ipinput2=${ipInput2}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text();
+            })
+            .then(data => {
+                console.log(data); // Log the response data
+                alert('Request completed successfully!');
+            })
+            .catch(error => {
+                console.error('Error fetching IP data:', error);
+                alert('Error fetching IP data. Please check the console for more information.');
+            });
+    }
+    </script>
+</body>
+</html>
