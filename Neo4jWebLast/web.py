@@ -15,10 +15,10 @@ app = Flask(__name__)
 CORS(app)  # Allow all origins by default
 
 # Connect to the Neo4j database
-graph = Graph("bolt://localhost:7687", auth=("neo4j", "25042166"))
+graph = Graph("bolt://localhost:7687", auth=("username", "yourpassword"))
 uri = "bolt://localhost:7687"
 username = "neo4j"
-password = "25042166"
+password = "yourpassword"
 #neo4j part
 urls = []
 #urls = ['https://www.milliyet.com.tr','https://webonline.cankaya.edu.tr','https://cubicl.io/tr','https://www.cankaya.edu.tr']
@@ -29,7 +29,7 @@ root_domains = set()
 mysql_config = {
     'host': 'localhost',
     'user': 'root',
-    'password': '250421nurmur',
+    'password': 'yourpassword',
     'database': 'cityurl'
 }
 
